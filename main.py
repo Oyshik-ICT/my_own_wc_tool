@@ -3,12 +3,15 @@ import os
 import sys
 
 def read_file(file, mode):
-    f = open(file[0], mode)
-    fp = f.read()
-    if mode == 'r':
-        return f, fp
-    else:
-        return fp
+    try:
+        f = open(file[0], mode)
+        fp = f.read()
+        if mode == 'r':
+            return f, fp
+        else:
+            return fp
+    except Exception as e:
+        print(e)
 
 @click.command()
 @click.option(
@@ -37,7 +40,6 @@ def read_file(file, mode):
 )
 @click.argument("file", nargs = -1, type = click.Path(exists=True))
 def calculate(file_bytes, file_lines, file_words, file_characters, file):
-
     if len(file) != 0:
         f, fp = read_file(file, 'r')
         f.seek(0, os.SEEK_END)
@@ -69,6 +71,7 @@ def calculate(file_bytes, file_lines, file_words, file_characters, file):
         print(total_chars)
     else:
         print(total_lines, total_words, total_bytes)
+    
     
 if __name__ == "__main__":
     calculate()
